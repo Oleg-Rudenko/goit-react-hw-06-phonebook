@@ -1,25 +1,31 @@
-.contactListItemBtn {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    align-items: right;
-    background-color: rgba(23, 26, 32, 0.8);
-    border: none;
-    border-radius: 6px;
-    color: #fff;
-    flex-grow: 1;
-    font-family: SFProText-Regular, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    height: 36px;
-    line-height: 20px;
-    margin-left: 8px;
-    margin-right: 6px;
-    min-width: 50px;
-    padding: 0 16px 0 16px;
-    color: white;
+.list {
+    list-style: square;
+}
+
+.name {
+    margin-right: 10px;
+}
+
+.number {
+    color: orangered;
+    margin-right: 10px;
+    font-size: 0.9em;
+}
+
+.listItem:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.button {
+    background-color: #ffffff;
+    background-color: gray;
+    color: #ffffff;
+    border: 1px solid gray;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-.contactListItemBtn:hover {
-    background-color: orangered;
-    cursor: pointer;
+.button:hover {
+    background-color:orangered;
+  
 }
