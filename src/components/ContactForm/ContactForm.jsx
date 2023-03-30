@@ -1,68 +1,52 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import actions from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from '../../redux/selectors';
-
+import { addContact } from '../../redux/contactSlice';
+import 'yup-phone';
+import { useForm } from 'react-hook-form';
 import css from './ContactForm.module.css';
-function ContactForm() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
 
+const checkContscts = (arr, obj) => {
+  return arr.every(e => e.name.toLowerCase() !== obj.name.toLowerCase());
+};
+
+const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+  } = useForm({
+ 
+  });
 
-  const handleNameChange = e => {
-    setName(e.target.value);
-  };
-  const handleNumberChange = e => {
-    setNumber(e.target.value);
-  };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!name || !number) return;
+  const onSubmit = data => {
+    const { name } = data;
 
-    const contactNames = contacts.map(contact => contact.name.toLowerCase());
-    if (contactNames.includes(name.toLowerCase())) {
-      alert(`${name} is already in contacts.`);
-      return;
+    if (checkContscts(contacts, data)) {
+      dispatch(addContact(data));
+      reset();
+    } else {
+      alert(`${name} is already in contacts`);
     }
-
-    dispatch(actions.addContact(name, number));
-
-    setName('');
-    setNumber('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className={css.form}>
-      <label className={css.formLabel}>
+    <form  onSubmit={handleSubmit(onSubmit)} className={css.form}>
+      <label  className={css.name}>
         Name
-        <input
-          type="text"
-          value={name}
-          name="name"
-          className={css.formInput}
-          placeholder=" "
-          onChange={handleNameChange}
-        />
-      </label>
-      <label className={css.formLabel}>
+        <input defaultValue="" {...register('name')} className={css.formInput}/>
+      </label >
+      <label className={css.number}>
         Number
-        <input
-          type="tel"
-          value={number}
-          name="number"
-          className={css.formInput}
-          placeholder=" "
-          onChange={handleNumberChange}
-        />
-      </label>
-      <button type="submit" className={css.button}>
-        Add contact
-      </button>
-    </form>
+        <input defaultValue="" {...register('number')} className={css.formInput}/>
+        
+      </label >
+      <button  type="submit" className={css.button}>Add contact</button >
+    </form >
   );
-}
+};
 
 export default ContactForm;
